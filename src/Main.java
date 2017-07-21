@@ -1,8 +1,4 @@
-import java.util.*;
-import java.lang.*;
-import java.io.*;
-
-class Ideone {
+class Main {
 	public static void main (String[] args) throws java.lang.Exception {
 		long v = 0x7FL;
 		long e = 0xFE0000000000L;
