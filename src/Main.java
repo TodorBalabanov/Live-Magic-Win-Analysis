@@ -1,6 +1,4 @@
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 class Ball {
 
@@ -8,10 +6,13 @@ class Ball {
 
 	long color;
 
-	public Ball(int value, long color) {
+	int group;
+
+	public Ball(int value, long color, int group) {
 		super();
 		this.value = value;
 		this.color = color;
+		this.group = group;
 	}
 
 	@Override
@@ -23,19 +24,14 @@ class Ball {
 
 class Main {
 
-	private static final Ball BALLS[] = { new Ball(1, 0x0000FF), new Ball(2, 0x000000), new Ball(3, 0xFF0000),
-			new Ball(4, 0x00FFFF), new Ball(5, 0xFFFF00), new Ball(6, 0xFF00FF), new Ball(7, 0x800000),
-			new Ball(8, 0xC0C0C0), new Ball(9, 0x0000FF), new Ball(10, 0x000000), new Ball(11, 0xFF0000),
-			new Ball(12, 0x00FFFF), new Ball(13, 0xFFFF00), new Ball(14, 0xFF00FF), new Ball(15, 0x800000),
-			new Ball(16, 0xC0C0C0), new Ball(17, 0x0000FF), new Ball(18, 0x000000), new Ball(19, 0xFF0000),
-			new Ball(20, 0x00FFFF), new Ball(21, 0xFFFF00), new Ball(22, 0xFF00FF), new Ball(23, 0x800000),
-			new Ball(24, 0xC0C0C0), new Ball(25, 0x0000FF), new Ball(26, 0x000000), new Ball(27, 0xFF0000),
-			new Ball(28, 0x00FFFF), new Ball(29, 0xFFFF00), new Ball(30, 0xFF00FF), new Ball(31, 0x800000),
-			new Ball(32, 0xC0C0C0), new Ball(33, 0x0000FF), new Ball(34, 0x000000), new Ball(35, 0xFF0000),
-			new Ball(36, 0x00FFFF), new Ball(37, 0xFFFF00), new Ball(38, 0xFF00FF), new Ball(39, 0x800000),
-			new Ball(40, 0xC0C0C0), new Ball(41, 0x0000FF), new Ball(42, 0x000000), new Ball(43, 0xFF0000),
-			new Ball(44, 0x00FFFF), new Ball(45, 0xFFFF00), new Ball(46, 0xFF00FF), new Ball(47, 0x800000),
-			new Ball(48, 0xC0C0C0), };
+	private static final Ball BALLS[] = { 
+		new Ball( 1, 0x0000FF, 0), new Ball( 2, 0x000000, 1), new Ball( 3, 0xFF0000, 2), new Ball( 4, 0x00FFFF, 3), new Ball( 5, 0xFFFF00, 4), new Ball( 6, 0xFF00FF, 5), new Ball( 7, 0x800000, 6), new Ball( 8, 0xC0C0C0, 7), 
+		new Ball( 9, 0x0000FF, 0), new Ball(10, 0x000000, 1), new Ball(11, 0xFF0000, 2), new Ball(12, 0x00FFFF, 3), new Ball(13, 0xFFFF00, 4), new Ball(14, 0xFF00FF, 5), new Ball(15, 0x800000, 6), new Ball(16, 0xC0C0C0, 7), 
+		new Ball(17, 0x0000FF, 0), new Ball(18, 0x000000, 1), new Ball(19, 0xFF0000, 2), new Ball(20, 0x00FFFF, 3), new Ball(21, 0xFFFF00, 4), new Ball(22, 0xFF00FF, 5), new Ball(23, 0x800000, 6), new Ball(24, 0xC0C0C0, 7), 
+		new Ball(25, 0x0000FF, 0), new Ball(26, 0x000000, 1), new Ball(27, 0xFF0000, 2), new Ball(28, 0x00FFFF, 3), new Ball(29, 0xFFFF00, 4), new Ball(30, 0xFF00FF, 5), new Ball(31, 0x800000, 6), new Ball(32, 0xC0C0C0, 7), 
+		new Ball(33, 0x0000FF, 0), new Ball(34, 0x000000, 1), new Ball(35, 0xFF0000, 2), new Ball(36, 0x00FFFF, 3), new Ball(37, 0xFFFF00, 4), new Ball(38, 0xFF00FF, 5), new Ball(39, 0x800000, 6), new Ball(40, 0xC0C0C0, 7), 
+		new Ball(41, 0x0000FF, 0), new Ball(42, 0x000000, 1), new Ball(43, 0xFF0000, 2), new Ball(44, 0x00FFFF, 3), new Ball(45, 0xFFFF00, 4), new Ball(46, 0xFF00FF, 5), new Ball(47, 0x800000, 6), new Ball(48, 0xC0C0C0, 7),
+	};
 
 	private static void draw(Ball[] drawn, long combination) {
 		for (int i = 0, j = 0; i < drawn.length; i++) {
@@ -109,33 +105,21 @@ class Main {
 	}
 
 	private static int count(Ball[] drawn) {
-		Map<Long, Integer> found = new HashMap<Long, Integer>();
-
-		/*
-		 * Initialize counters.
-		 */
-		found.put(0x0000FFL, 0);
-		found.put(0x000000L, 0);
-		found.put(0xFF0000L, 0);
-		found.put(0x00FFFFL, 0);
-		found.put(0xFFFF00L, 0);
-		found.put(0xFF00FFL, 0);
-		found.put(0x800000L, 0);
-		found.put(0xC0C0C0L, 0);
+		int found[] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 		/*
 		 * Count found balls for each color.
 		 */
 		for (Ball ball : drawn) {
-			found.put(ball.color, found.get(ball.color) + 1);
+			found[ ball.group ]++;
 		}
 
 		/*
 		 * Count how many colors are complete.
 		 */
 		int result = 0;
-		for (Map.Entry<Long, Integer> entry : found.entrySet()) {
-			if (entry.getValue() == 6) {
+		for (int i=0; i<found.length; i++) {
+			if (found[i] == 6) {
 				result++;
 			}
 		}
