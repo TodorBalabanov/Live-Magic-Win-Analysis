@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 class Ball {
 
@@ -14,7 +16,7 @@ class Ball {
 
 	@Override
 	public String toString() {
-		return "[" + value + ", " + color + "]";
+		return "[" + value + "," + color + "]";
 	}
 
 }
@@ -58,7 +60,7 @@ class Main {
 		return result;
 	}
 
-	public static void main(String[] args) throws java.lang.Exception {
+	private static void sumsStatistics() {
 		long current = 0x1FL;
 		long last = 0xF80000000000L;
 		long buffer = 0;
@@ -104,6 +106,83 @@ class Main {
 		System.out.println("=" + found[3] + "/" + total);
 		System.out.println("=" + found[4] + "/" + total);
 		System.out.println("=" + found[5] + "/" + total);
+	}
+
+	private static int count(Ball[] drawn) {
+		Map<Long, Integer> found = new HashMap<Long, Integer>();
+
+		/*
+		 * Initialize counters.
+		 */
+		found.put(0x0000FFL, 0);
+		found.put(0x000000L, 0);
+		found.put(0xFF0000L, 0);
+		found.put(0x00FFFFL, 0);
+		found.put(0xFFFF00L, 0);
+		found.put(0xFF00FFL, 0);
+		found.put(0x800000L, 0);
+		found.put(0xC0C0C0L, 0);
+
+		/*
+		 * Count found balls for each color.
+		 */
+		for (Ball ball : drawn) {
+			found.put(ball.color, found.get(ball.color) + 1);
+		}
+
+		/*
+		 * Count how many colors are complete.
+		 */
+		int result = 0;
+		for (Map.Entry<Long, Integer> entry : found.entrySet()) {
+			if (entry.getValue() == 6) {
+				result++;
+			}
+		}
+		return result;
+	}
+
+	private static void colorsStatistics() {
+		long current = 0x7FFFFFFFFL;
+		long last = 0xFFFFFFFFE000L;
+		long buffer = 0;
+
+		long counters[] = { 0L, 0L, 0L, 0L, 0L, 0L };
+		long total = 0L;
+
+		Ball drawn[] = { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+				null, null, };
+
+		while (current <= last) {
+			draw(drawn, current);
+			counters[count(drawn)]++;
+
+			/*
+			 * Report progress.
+			 */
+			if (total % 10000000 == 0) {
+				System.err.println(100 * total / 192928249296D + "%");
+			}
+
+			total++;
+
+			buffer = (current | (current - 1)) + 1;
+			current = buffer | ((((buffer & -buffer) / (current & -current)) >> 1) - 1);
+		}
+
+		System.out.println("=" + counters[0] + "/" + total);
+		System.out.println("=" + counters[1] + "/" + total);
+		System.out.println("=" + counters[2] + "/" + total);
+		System.out.println("=" + counters[3] + "/" + total);
+		System.out.println("=" + counters[4] + "/" + total);
+		System.out.println("=" + counters[5] + "/" + total);
+	}
+
+	public static void main(String[] args) throws java.lang.Exception {
+		// sumsStatistics();
+		
+		colorsStatistics();
 	}
 
 }
