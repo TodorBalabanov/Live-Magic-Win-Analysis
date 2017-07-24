@@ -230,7 +230,9 @@ class Main {
 			}
 
 			if (l != Integer.MAX_VALUE) {
-				counters[i][l]++;
+				counters[i][l + 1]++;
+			} else {
+				counters[i][0]++;
 			}
 		}
 	}
@@ -249,11 +251,11 @@ class Main {
 				{ null, null, null, null, null }, };
 
 		long counters[][] = {
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, };
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, };
 
 		/*
 		 * Simulation.
@@ -275,6 +277,12 @@ class Main {
 		}
 
 		/*
+		 * Report experiments number.
+		 */
+		System.out.println(runs);
+		System.out.println();
+
+		/*
 		 * Report absolute numbers.
 		 */
 		for (int i = 0; i < counters.length; i++) {
@@ -291,7 +299,7 @@ class Main {
 		 */
 		for (int i = 0; i < counters.length; i++) {
 			for (int j = 0; j < counters[i].length; j++) {
-				System.out.print(String.format("%4.2f", ((double) counters[i][j]) / (double) runs));
+				System.out.print(String.format("%8.6f", ((double) counters[i][j]) / (double) runs));
 				System.out.print("\t");
 			}
 			System.out.println();
